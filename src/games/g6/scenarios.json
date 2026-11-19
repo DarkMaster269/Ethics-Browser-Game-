@@ -1,0 +1,128 @@
+[
+  {
+    "id": "sc1",
+    "entity": "Nagarpur Metals Ltd",
+    "description": "Generating fake Goods & Services Tax (GST) invoices from a nonexistent paper warehouse to claim ₹1.8 crore in input tax credits without delivering any goods.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Fabricating bogus invoices for goods that were never manufactured or supplied is outright criminal tax fraud and forgery."
+  },
+  {
+    "id": "sc2",
+    "entity": "Apex Tech Park LLP",
+    "description": "Registering software intellectual property in a zero-tax overseas jurisdiction and charging its Nagarpur operating branch 90% royalties to wipe out local taxable profits.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE (Aggressive Base Erosion). Exploits international transfer pricing and double tax treaty rules. Technically legal under current statutes, though it drains domestic revenue."
+  },
+  {
+    "id": "sc3",
+    "entity": "Dr. Sharma's Diagnostic Lab",
+    "description": "Offering a 20% discount to all patients who pay in cash, and maintaining an unrecorded spiral notebook behind the counter instead of entering sales into the billing software.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Maintaining two sets of accounting books (kaccha khata) and deliberately suppressing gross sales is criminal tax fraud."
+  },
+  {
+    "id": "sc4",
+    "entity": "Nagarpur Solar Solutions",
+    "description": "Accelerating depreciation claims on new green energy rooftop equipment in the very first fiscal year, as permitted under the National Renewable Energy Incentive Act.",
+    "classification": "avoidance",
+    "explanation": "LEGAL PLANNING / AVOIDANCE. Utilizing explicit statutory exemptions provided by lawmakers to promote renewable energy adoption."
+  },
+  {
+    "id": "sc5",
+    "entity": "Grand Heritage Banquet Hall",
+    "description": "Requiring wedding bookings to pay 60% of the hall rent via bearer cash envelopes, declaring only the remaining 40% catering fee on official tax filings.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Deliberate non-declaration of cash revenues to evade local municipal luxury and commercial tax."
+  },
+  {
+    "id": "sc6",
+    "entity": "Nagarpur Realty Consortium",
+    "description": "Setting up 18 distinct subsidiary companies each holding one parcel of land, ensuring each entity stays below the mandatory municipal land ceiling threshold.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE. Structuring corporate entity boundaries to circumvent tax and land regulatory caps while observing statutory wording."
+  },
+  {
+    "id": "sc7",
+    "entity": "Ramesh Kumar (Jeweller)",
+    "description": "Smuggling 15 kilograms of unrefined gold bullion inside customized truck spare tire compartments to avoid paying import customs duties.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Contraband smuggling and physical concealment of dutiable commodities is a serious criminal offense."
+  },
+  {
+    "id": "sc8",
+    "entity": "Horizon Pharma Logistics",
+    "description": "Routing all regional medicine shipments through a neighboring state with a 0.5% lower interstate tax rate by registering a nominal post-box office there.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE (Forum Shopping). Capitalizing on jurisdictional interstate tax rate differentials through strategic address registration."
+  },
+  {
+    "id": "sc9",
+    "entity": "Nagarpur Premier League Club",
+    "description": "Paying foreign star coaches in off-the-record cryptocurrency sent to untracked private wallets, with zero withholding tax deducted at source.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Evading mandatory Tax Deducted at Source (TDS) on payroll obligations through untracked digital assets."
+  },
+  {
+    "id": "sc10",
+    "entity": "Greenfield Agro Exporters",
+    "description": "Donating surplus profits to a recognized agricultural research trust to claim a 100% tax deduction under statutory charitable deduction provisions.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE / INCENTIVE. Utilizing clear legal provisions intended by parliament to stimulate philanthropic and research funding."
+  },
+  {
+    "id": "sc11",
+    "entity": "City Central Supermart",
+    "description": "Deleting electronic cash register point-of-sale audit logs at midnight using automated zapper software to underreport monthly turnover by 35%.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Using automated automated sales suppression software (zappers) to falsify electronic audit trails is high-tech fraud."
+  },
+  {
+    "id": "sc12",
+    "entity": "Nagarpur Cement Corporation",
+    "description": "Issuing convertible preference shares to a friendly offshore trust in Mauritius right before declaring a massive dividend to bypass domestic distribution taxes.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE (Treaty Shopping). Sophisticated legal structuring to exploit bilateral tax treaty loopholes."
+  },
+  {
+    "id": "sc13",
+    "entity": "Vijay Automobiles",
+    "description": "Selling pre-owned luxury sedans for ₹45 lakh each while recording the sale agreement at ₹12 lakh and accepting ₹33 lakh in physical cash bundles.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION (Undervaluation). Under-reporting property and asset sale considerations to depress stamp duty and capital gains taxes."
+  },
+  {
+    "id": "sc14",
+    "entity": "FinCorp Advisory Ltd",
+    "description": "Paying executive bonuses as 'reimbursement of entertainment allowances' supported by blank restaurant receipts purchased from stationary shops.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Forging fictitious expense documentation to mask taxable executive compensation."
+  },
+  {
+    "id": "sc15",
+    "entity": "Nagarpur Textile Mills",
+    "description": "Timing the acquisition of heavy spinning looms to March 29th specifically to claim full-year capital allowances for that financial year.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE (Tax Timing). Arranging the timing of legitimate commercial asset acquisitions within the statutory financial calendar."
+  },
+  {
+    "id": "sc16",
+    "entity": "Metro Infrastructure Ltd",
+    "description": "Claiming corporate headquarters utility bills as deductible expenses for an under-construction public toll road project in another district.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Falsely misallocating corporate overheads to inflate capital deductions on public infrastructure concessions."
+  },
+  {
+    "id": "sc17",
+    "entity": "Nagarpur Cinema Multiplex",
+    "description": "Structuring movie ticket pricing by separating ₹100 admission from ₹150 mandatory 'air-conditioning convenience charge' to reduce entertainment tax liability.",
+    "classification": "avoidance",
+    "explanation": "LEGAL AVOIDANCE. Unbundling service charges to exploit specific definitions in local municipal entertainment tax bylaws."
+  },
+  {
+    "id": "sc18",
+    "entity": "Sunil Enterprises (Pawn Broker)",
+    "description": "Maintaining an iron safe containing ₹12 crore in unregistered diamond jewellery without any purchase vouchers or declaration in wealth tax filings.",
+    "classification": "evasion",
+    "explanation": "ILLEGAL EVASION. Concealing high-value physical assets and unexplained wealth outside official books of account."
+  }
+]

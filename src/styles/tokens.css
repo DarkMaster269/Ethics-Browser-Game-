@@ -1,0 +1,29 @@
+:root {
+  /* Backgrounds */
+  --bg-app: #F7F5F0;       /* Warm cream background */
+  --bg-surface: #FFFFFF;   /* Pure white cards */
+  --bg-alt: #F0ECE1;       /* Slightly darker cream for panel insets */
+  
+  /* Text */
+  --ink: #23252B;          /* Very slightly warmer dark grey */
+  --ink-muted: #5C6274;    /* Muted slate for subtitles */
+  --ink-dim: #8C92A4;      /* Dimmer text for tiny labels */
+  --paper-ink: #23252B;
+
+  /* Borders */
+  --line: #E3DFD3;         /* Warm grey borders */
+  --line-strong: #CDD1D9;  
+
+  /* Accents (Earthy, muted, editorial) */
+  --accent-gold: #C27A3B;  /* Muted mustard/terracotta instead of pure orange */
+  --accent-teal: #1F6F64;  /* Deep forest teal instead of bright green */
+  --accent-blue: #355C8A;  /* Muted slate blue instead of bright blue */
+  --accent-red: #9E3C3C;   /* Brick red instead of pure red */
+  --accent-violet: #7C3AED;/* Violet for Tax category */
+
+  /* Fonts */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-ui: var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
