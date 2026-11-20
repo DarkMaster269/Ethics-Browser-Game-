@@ -126,3 +126,19 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---- G1: city reacts to police heat ---- */
+@keyframes siren-red {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 1; }
+}
+@keyframes siren-blue {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.1; }
+}
+.siren-red  { animation: siren-red 1.4s ease-in-out infinite; }
+.siren-blue { animation: siren-blue 1.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .siren-red, .siren-blue { animation: none; opacity: 0.6; }
+}

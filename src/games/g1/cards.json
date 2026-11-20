@@ -6,18 +6,18 @@
     "scenario": "A prominent real estate developer brings 50 boxes of sweets stuffed with ₹2 crore in unaccounted cash to distribute to ward booth managers.",
     "leftChoice": {
       "label": "Reject Cash",
-      "wealth": -10,
-      "influence": -15,
-      "welfare": 15,
-      "heat": -15,
+      "wealth": -2,
+      "influence": -8,
+      "welfare": 4,
+      "heat": -5,
       "explanation": "You insist on transparent digital donations. The developer leaves angry, but vigilance agencies find nothing on you."
     },
     "rightChoice": {
       "label": "Distribute Quietly",
-      "wealth": 30,
-      "influence": 25,
-      "welfare": -20,
-      "heat": 25,
+      "wealth": 9,
+      "influence": 10,
+      "welfare": -7,
+      "heat": 13,
       "explanation": "Booth workers are energized with secret cash envelopes. Word leaks to election observers."
     }
   },
@@ -28,18 +28,18 @@
     "scenario": "A construction syndicate promises a 12% cut from the Nagarpur East Flyover contract into your election fund if you pre-clear their sub-standard cement mix.",
     "leftChoice": {
       "label": "Enforce Quality Audit",
-      "wealth": -5,
+      "wealth": -1,
       "influence": 0,
-      "welfare": 30,
-      "heat": -10,
+      "welfare": 8,
+      "heat": -3,
       "explanation": "You insist on high-grade materials and independent lab testing. Citizens get a safe bridge; contractors grumble."
     },
     "rightChoice": {
       "label": "Approve Cut & Waiver",
-      "wealth": 35,
-      "influence": 15,
-      "welfare": -35,
-      "heat": 20,
+      "wealth": 11,
+      "influence": 6,
+      "welfare": -12,
+      "heat": 10,
       "explanation": "Your campaign war-chest swells. Three years later, civic engineers report dangerous hairline fractures on the overpass."
     }
   },
@@ -50,18 +50,18 @@
     "scenario": "A cash courier transporting ₹80 lakh without documentation has been stopped at the Nagarpur outer toll gate. The police inspector asks for a quiet call.",
     "leftChoice": {
       "label": "Let Law Take Course",
-      "wealth": -20,
-      "influence": -10,
-      "welfare": 20,
-      "heat": -20,
+      "wealth": -4,
+      "influence": -5,
+      "welfare": 5,
+      "heat": -6,
       "explanation": "The cash is seized and deposited in the treasury. You lose funding, but your legal record remains clean."
     },
     "rightChoice": {
       "label": "Intervene & Cover Up",
-      "wealth": 15,
-      "influence": 10,
-      "welfare": -15,
-      "heat": 35,
+      "wealth": 5,
+      "influence": 4,
+      "welfare": -5,
+      "heat": 18,
       "explanation": "The inspector lets the van go for a cut. A local journalist snaps a photo of the vehicle leaving the station."
     }
   },
@@ -72,18 +72,18 @@
     "scenario": "Your chartered accountant proposes channeling ₹5 crore through 14 defunct shell companies registered at a single tin shed in Nagarpur Industrial Area.",
     "leftChoice": {
       "label": "File Legitimate Books",
-      "wealth": -15,
-      "influence": -5,
-      "welfare": 20,
-      "heat": -15,
+      "wealth": -3,
+      "influence": -3,
+      "welfare": 5,
+      "heat": -5,
       "explanation": "You pay full tax and declare standard corporate contributions. Capital is smaller, but no enforcement summons arrive."
     },
     "rightChoice": {
       "label": "Spin the Carousel",
-      "wealth": 40,
-      "influence": 20,
-      "welfare": -25,
-      "heat": 30,
+      "wealth": 12,
+      "influence": 8,
+      "welfare": -9,
+      "heat": 15,
       "explanation": "Black money turns into 'unsecured loans' overnight. The Financial Intelligence Unit flags the sudden spike in shell activity."
     }
   },
@@ -94,18 +94,18 @@
     "scenario": "Ahead of Sunday's rally in Ward 11, local operatives demand ₹15 lakh for free liquor crates. Alternatively, residents are begging for emergency water tankers.",
     "leftChoice": {
       "label": "Send Water Tankers",
-      "wealth": -10,
-      "influence": 5,
-      "welfare": 35,
-      "heat": -10,
+      "wealth": -2,
+      "influence": 3,
+      "welfare": 9,
+      "heat": -3,
       "explanation": "Mothers and families bless your team; clean drinking water brings genuine goodwill, though drunkard cadres grumble."
     },
     "rightChoice": {
       "label": "Distribute Liquor",
-      "wealth": -5,
-      "influence": 25,
-      "welfare": -35,
-      "heat": 25,
+      "wealth": -2,
+      "influence": 10,
+      "welfare": -12,
+      "heat": 13,
       "explanation": "Rally attendance is deafening and rowdy. Domestic violence incidents surge overnight in the settlement."
     }
   },
@@ -116,18 +116,18 @@
     "scenario": "The illegal Nagarpur river sand cartel offers to bankroll your entire social media army if you promise to look away from nighttime river dredging.",
     "leftChoice": {
       "label": "Impound Dredgers",
-      "wealth": -10,
-      "influence": -15,
-      "welfare": 35,
-      "heat": -15,
+      "wealth": -2,
+      "influence": -8,
+      "welfare": 9,
+      "heat": -5,
       "explanation": "River ecology is protected and ground water tables stabilize. The powerful sand mafia vows to support your rival."
     },
     "rightChoice": {
       "label": "Take the Social Fund",
-      "wealth": 30,
-      "influence": 30,
-      "welfare": -30,
-      "heat": 25,
+      "wealth": 9,
+      "influence": 12,
+      "welfare": -11,
+      "heat": 13,
       "explanation": "Influencers flood feeds with viral praising videos. Two monsoon bridges downstream experience severe pillar erosion."
     }
   },
@@ -139,17 +139,17 @@
     "leftChoice": {
       "label": "Build the Dialysis Wing",
       "wealth": 0,
-      "influence": 10,
-      "welfare": 40,
-      "heat": -15,
+      "influence": 5,
+      "welfare": 10,
+      "heat": -5,
       "explanation": "Dozens of kidney patients receive subsidized life-saving care. You gain immense moral authority in the city."
     },
     "rightChoice": {
       "label": "Divert for PR Blitz",
-      "wealth": 25,
-      "influence": 25,
-      "welfare": -45,
-      "heat": 20,
+      "wealth": 8,
+      "influence": 10,
+      "welfare": -16,
+      "heat": 10,
       "explanation": "Giant LED billboards of your face illuminate every junction. Patients wait months on the kidney waiting list."
     }
   },
@@ -160,18 +160,18 @@
     "scenario": "An advisor suggests declaring ₹4 crore in untaxed political slush funds as 'bumper mango harvest profit' from a 2-acre fallow plot to exploit farm tax exemptions.",
     "leftChoice": {
       "label": "Decline Sham Exemption",
-      "wealth": -15,
+      "wealth": -3,
       "influence": 0,
-      "welfare": 15,
-      "heat": -10,
+      "welfare": 4,
+      "heat": -3,
       "explanation": "You avoid agricultural tax fraud. Farm workers respect your refusal to abuse rural relief measures."
     },
     "rightChoice": {
       "label": "Claim Mango Millions",
-      "wealth": 35,
-      "influence": 10,
-      "welfare": -20,
-      "heat": 30,
+      "wealth": 11,
+      "influence": 4,
+      "welfare": -7,
+      "heat": 15,
       "explanation": "Tax inspectors note that the registered land has only 3 barren shrubs and no irrigation. A tax notice is drawn up."
     }
   },
@@ -183,17 +183,17 @@
     "leftChoice": {
       "label": "Respect Voter Mandate",
       "wealth": 0,
-      "influence": -15,
-      "welfare": 25,
-      "heat": -15,
+      "influence": -8,
+      "welfare": 6,
+      "heat": -5,
       "explanation": "Votes are counted under CCTV in full view of observers. The integrity of the ballot box is preserved."
     },
     "rightChoice": {
       "label": "Pay the Discretionary Fee",
-      "wealth": -10,
-      "influence": 35,
-      "welfare": -35,
-      "heat": 40,
+      "wealth": -3,
+      "influence": 14,
+      "welfare": -12,
+      "heat": 20,
       "explanation": "The official declares unexpected technical delays. Protesters gather outside the counting center chanting slogans."
     }
   },
@@ -204,18 +204,18 @@
     "scenario": "To park ₹8 crore of accumulated commission fees, a real estate agent suggests purchasing a 5-story shopping plaza under the name of your family driver.",
     "leftChoice": {
       "label": "Refuse Benami Shelter",
-      "wealth": -10,
+      "wealth": -2,
       "influence": 0,
-      "welfare": 15,
-      "heat": -20,
+      "welfare": 4,
+      "heat": -6,
       "explanation": "You refuse to exploit a low-income employee as a proxy. Transparent ownership shields you from asset seizures."
     },
     "rightChoice": {
       "label": "Sign Power of Attorney",
-      "wealth": 45,
-      "influence": 15,
-      "welfare": -25,
-      "heat": 35,
+      "wealth": 14,
+      "influence": 6,
+      "welfare": -9,
+      "heat": 18,
       "explanation": "Rental yields pour into your hidden coffers. When the Anti-Corruption Bureau audits the driver's tax returns, sirens start blaring."
     }
   },
@@ -227,17 +227,17 @@
     "leftChoice": {
       "label": "Fight on Track Record",
       "wealth": 0,
-      "influence": -5,
-      "welfare": 20,
-      "heat": -10,
+      "influence": -3,
+      "welfare": 5,
+      "heat": -3,
       "explanation": "You campaign on municipal policies and civic manifestos. Voters appreciate an honest electoral battle."
     },
     "rightChoice": {
       "label": "Fund the Namesakes",
-      "wealth": -15,
-      "influence": 25,
-      "welfare": -25,
-      "heat": 20,
+      "wealth": -5,
+      "influence": 10,
+      "welfare": -9,
+      "heat": 10,
       "explanation": "Voters are baffled at the booth, casting 3,000 mistaken votes. Civic groups label the election a cynical mockery."
     }
   },
@@ -248,18 +248,18 @@
     "scenario": "A public activist has uncovered shell company records linking local tenders to your campaign office. A corrupt tax commissioner offers to raid his NGO.",
     "leftChoice": {
       "label": "Release Public Audit",
-      "wealth": -20,
-      "influence": -10,
-      "welfare": 35,
-      "heat": -25,
+      "wealth": -4,
+      "influence": -5,
+      "welfare": 9,
+      "heat": -8,
       "explanation": "You open accounts for public scrutiny and reform campaign fundraising. The press applauds your transparency."
     },
     "rightChoice": {
       "label": "Unleash the Raids",
-      "wealth": 10,
-      "influence": 20,
-      "welfare": -40,
-      "heat": 35,
+      "wealth": 3,
+      "influence": 8,
+      "welfare": -14,
+      "heat": 18,
       "explanation": "The activist's office is sealed on trumped-up charges. Nagarpur's civil society erupts in candlelight demonstrations."
     }
   }

@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        // Short laptop viewports (e.g. 1366x768 with browser chrome)
+        short: { raw: '(max-height: 720px)' },
+      },
       colors: {
         'bg-app': 'var(--bg-app)',
         'bg-surface': 'var(--bg-surface)',
