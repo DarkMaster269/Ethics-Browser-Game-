@@ -72,9 +72,12 @@ export const Game1: React.FC<Game1Props> = ({ onFinish }) => {
   const [cards] = useState<CardData[]>(() => prepareDeck());
   const [cardIndex, setCardIndex] = useState(0);
 
-  // Meters: 0 to 100. The ref is the source of truth so rapid inputs never read stale values.
+  // Meters: 0 to 100. Refs are the source of truth so rapid inputs never read stale values.
   const metersRef = useRef<Meters>({ wealth: 50, influence: 50, welfare: 50, heat: 15 });
   const [meters, setMeters] = useState<Meters>(metersRef.current);
+
+  const decisionsRef = useRef<Decision[]>([]);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
 
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -84,7 +87,6 @@ export const Game1: React.FC<Game1Props> = ({ onFinish }) => {
   const [preview, setPreview] = useState<Side | null>(null);
   const [ledger, setLedger] = useState<LedgerEntry | null>(null);
   const [deltas, setDeltas] = useState<Deltas | null>(null);
-  const [decisions, setDecisions] = useState<Decision[]>([]);
 
   const deltaKey = useRef(0);
   const lockUntil = useRef(0);
@@ -106,25 +108,10 @@ export const Game1: React.FC<Game1Props> = ({ onFinish }) => {
   }, [isGameOver]);
 
   useEffect(() => {
-    if (!isGameOver && timeLeft <= 0) endGame('Election Day Arrived! Polls have closed.');
-  }, [timeLeft, isGameOver, endGame]);
-
-  // Game-over triggers
-  useEffect(() => {
-    if (isGameOver) return;
-    if (meters.heat >= 100) {
-      endGame('ANTI-CORRUPTION BUREAU RAID! Midnight summons issued; your election campaign is frozen.');
-    } else if (meters.welfare <= 0) {
-      endGame('CIVIC COLLAPSE! Public protests break out over degraded civic infrastructure.');
-    } else if (meters.wealth <= 0) {
-      const allClean = decisions.length > 0 && decisions.every((d) => d.ethical);
-      endGame(
-        allClean
-          ? 'CAMPAIGN FUNDS RAN DRY. You refused every shortcut and the city is better for it, but clean campaigns need donors too.'
-          : 'FINANCIAL PARALYSIS! Campaign bank accounts are empty; poll staff refuse to show up.'
-      );
+    if (!isGameOver && timeLeft <= 0) {
+      endGame('Election Day Arrived! Polls have closed.');
     }
-  }, [meters, decisions, isGameOver, endGame]);
+  }, [timeLeft, isGameOver, endGame]);
 
   // Clear the floating +/- numbers after a moment
   useEffect(() => {
@@ -135,7 +122,7 @@ export const Game1: React.FC<Game1Props> = ({ onFinish }) => {
 
   const handleChoice = useCallback(
     (direction: Side) => {
-      if (isGameOver) return;
+      if (endedRef.current || isGameOver) return;
       const card = cards[cardIndex];
       if (!card) return;
 
@@ -166,14 +153,29 @@ export const Game1: React.FC<Game1Props> = ({ onFinish }) => {
         heat: next.heat - prev.heat,
       });
 
+      const nextDecisions: Decision[] = [
+        ...decisionsRef.current,
+        { title: card.title, label: choice.label, ethical: isEthical, welfareDelta: next.welfare - prev.welfare },
+      ];
+      decisionsRef.current = nextDecisions;
+      setDecisions(nextDecisions);
+
       setPreview(null);
       setLedger({ n: cardIndex + 1, label: choice.label, explanation: choice.explanation, tone: isEthical ? 'clean' : 'dirty' });
-      setDecisions((d) => [
-        ...d,
-        { title: card.title, label: choice.label, ethical: isEthical, welfareDelta: next.welfare - prev.welfare },
-      ]);
 
-      if (cardIndex + 1 >= cards.length) {
+      // Evaluate failure triggers BEFORE deck completion so Card 12 end-states take priority
+      if (next.heat >= 100) {
+        endGame('ANTI-CORRUPTION BUREAU RAID! Midnight summons issued; your election campaign is frozen.');
+      } else if (next.welfare <= 0) {
+        endGame('CIVIC COLLAPSE! Public protests break out over degraded civic infrastructure.');
+      } else if (next.wealth <= 0) {
+        const allClean = nextDecisions.length > 0 && nextDecisions.every((d) => d.ethical);
+        endGame(
+          allClean
+            ? 'CAMPAIGN FUNDS RAN DRY. You refused every shortcut and the city is better for it, but clean campaigns need donors too.'
+            : 'FINANCIAL PARALYSIS! Campaign bank accounts are empty; poll staff refuse to show up.'
+        );
+      } else if (cardIndex + 1 >= cards.length) {
         endGame('All Campaign Dilemmas Resolved! You navigated the entire municipal election cycle.');
       } else {
         setCardIndex((i) => i + 1);

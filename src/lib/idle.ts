@@ -19,7 +19,10 @@ export function useIdle({
 }: UseIdleOptions) {
   const [isWarning, setIsWarning] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState(Math.ceil(timeoutMs / 1000));
+
   const lastActivityRef = useRef<number>(Date.now());
+  const isWarningRef = useRef<boolean>(false);
+  const lastShownSecRef = useRef<number>(Math.ceil(timeoutMs / 1000));
   const timerRef = useRef<number | null>(null);
   const onTimeoutRef = useRef(onTimeout);
 
@@ -29,8 +32,15 @@ export function useIdle({
 
   const resetActivity = useCallback(() => {
     lastActivityRef.current = Date.now();
-    setIsWarning(false);
-    setSecondsRemaining(Math.ceil(timeoutMs / 1000));
+    if (isWarningRef.current) {
+      isWarningRef.current = false;
+      setIsWarning(false);
+    }
+    const fullSec = Math.ceil(timeoutMs / 1000);
+    if (lastShownSecRef.current !== fullSec) {
+      lastShownSecRef.current = fullSec;
+      setSecondsRemaining(fullSec);
+    }
   }, [timeoutMs]);
 
   useEffect(() => {
@@ -39,13 +49,25 @@ export function useIdle({
       return;
     }
 
-    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'touchmove', 'scroll', 'wheel', 'pointerdown'];
+    const events = [
+      'mousemove',
+      'mousedown',
+      'keydown',
+      'touchstart',
+      'touchmove',
+      'scroll',
+      'wheel',
+      'pointerdown',
+    ];
 
     const handleUserActivity = () => {
       lastActivityRef.current = Date.now();
-      if (isWarning) {
+      if (isWarningRef.current) {
+        isWarningRef.current = false;
         setIsWarning(false);
-        setSecondsRemaining(Math.ceil(timeoutMs / 1000));
+        const fullSec = Math.ceil(timeoutMs / 1000);
+        lastShownSecRef.current = fullSec;
+        setSecondsRemaining(fullSec);
       }
     };
 
@@ -53,20 +75,27 @@ export function useIdle({
       window.addEventListener(evt, handleUserActivity, { passive: true });
     });
 
-    // Check every 500ms
     timerRef.current = window.setInterval(() => {
       const elapsed = Date.now() - lastActivityRef.current;
-      const remaining = Math.max(0, Math.ceil((timeoutMs - elapsed) / 1000));
-      setSecondsRemaining(remaining);
-
-      if (elapsed >= warningMs && !isWarning) {
-        setIsWarning(true);
-      }
 
       if (elapsed >= timeoutMs) {
-        lastActivityRef.current = Date.now(); // avoid double-triggering
+        lastActivityRef.current = Date.now();
+        isWarningRef.current = false;
         setIsWarning(false);
         onTimeoutRef.current();
+        return;
+      }
+
+      if (elapsed >= warningMs) {
+        const remaining = Math.max(1, Math.ceil((timeoutMs - elapsed) / 1000));
+        if (!isWarningRef.current) {
+          isWarningRef.current = true;
+          setIsWarning(true);
+        }
+        if (lastShownSecRef.current !== remaining) {
+          lastShownSecRef.current = remaining;
+          setSecondsRemaining(remaining);
+        }
       }
     }, 500);
 
@@ -76,9 +105,10 @@ export function useIdle({
       });
       if (timerRef.current) {
         clearInterval(timerRef.current);
+        timerRef.current = null;
       }
     };
-  }, [enabled, timeoutMs, warningMs, isWarning]);
+  }, [enabled, timeoutMs, warningMs]);
 
   return {
     isWarning,

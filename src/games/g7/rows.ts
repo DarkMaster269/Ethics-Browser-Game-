@@ -139,7 +139,7 @@ export const voterRows: VoterRecord[] = [
     relation: "Son of P. Bannerjee",
     address: "Shop No. 7 (Hardware Store), Ward 11",
     ward: "Ward 11 (Commercial Hub)",
-    anomalyFlag: "32 adults registered as residential residents in a 100 sq ft plumbing warehouse.",
+    anomalyFlag: "32 adults registered as permanent residents in a 100 sq ft plumbing warehouse.",
     correctAction: "purge",
     explanation: "PURGE: Commercial property falsely registered as residential mass dwelling for phantom voters.",
     isRealCitizen: false

@@ -7,7 +7,7 @@ import { GameModule, GameFinishResult } from './lib/moduleContract';
 import game1Module from './games/g1';
 import game6Module from './games/g6';
 import game7Module from './games/g7';
-import { AlertCircle, Clock } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Clock } from 'lucide-react';
 
 const gameModules: Record<'g1' | 'g6' | 'g7', GameModule> = {
   g1: game1Module,
@@ -23,26 +23,22 @@ export const App: React.FC = () => {
 
   const gameContainerRef = useRef<HTMLDivElement | null>(null);
   const activeModuleRef = useRef<GameModule | null>(null);
+  const noticeTimerRef = useRef<number | null>(null);
 
-  // Subscribe to session state
   useEffect(() => {
     return statsManager.subscribe((next) => {
       setSession(next);
     });
   }, []);
 
-  // Layout survives resize via ResizeObserver
   useEffect(() => {
-    const ro = new ResizeObserver(() => {
-      // Handles window/kiosk scale transitions seamlessly
-    });
-    if (document.body) {
-      ro.observe(document.body);
-    }
-    return () => ro.disconnect();
+    return () => {
+      if (noticeTimerRef.current) {
+        clearTimeout(noticeTimerRef.current);
+      }
+    };
   }, []);
 
-  // Safe game destruction helper
   const teardownActiveGame = useCallback(() => {
     if (activeModuleRef.current) {
       try {
@@ -52,22 +48,23 @@ export const App: React.FC = () => {
       }
       activeModuleRef.current = null;
     }
-    if (gameContainerRef.current) {
-      gameContainerRef.current.innerHTML = '';
-    }
   }, []);
 
-  // 30-second idle reset handler
   const handleIdleReset = useCallback(() => {
     teardownActiveGame();
     setActiveGameId(null);
     setCurrentView('hub');
     statsManager.resetSession();
-    setIdleNotice('Kiosk returned to hub due to 30s inactivity.');
-    setTimeout(() => setIdleNotice(null), 4000);
+    setIdleNotice('Session refreshed after 30s inactivity.');
+    if (noticeTimerRef.current) {
+      clearTimeout(noticeTimerRef.current);
+    }
+    noticeTimerRef.current = window.setTimeout(() => {
+      setIdleNotice(null);
+      noticeTimerRef.current = null;
+    }, 4000);
   }, [teardownActiveGame]);
 
-  // Hook for 30s idle detection
   const { isWarning, secondsRemaining } = useIdle({
     timeoutMs: 30000,
     warningMs: 25000,
@@ -75,59 +72,58 @@ export const App: React.FC = () => {
     enabled: true,
   });
 
-  // Launch a game via the GameModule contract
-  const handleSelectGame = useCallback((gameId: 'g1' | 'g6' | 'g7') => {
-    teardownActiveGame();
-    setActiveGameId(gameId);
-    setCurrentView('game');
-  }, [teardownActiveGame]);
+  const handleSelectGame = useCallback(
+    (gameId: 'g1' | 'g6' | 'g7') => {
+      teardownActiveGame();
+      setActiveGameId(gameId);
+      setCurrentView('game');
+    },
+    [teardownActiveGame]
+  );
 
-  // Mount game into DOM container once rendered
+  // Mount and cleanly unmount game modules whenever view/game changes
   useEffect(() => {
-    if (currentView === 'game' && activeGameId && gameContainerRef.current) {
-      const module = gameModules[activeGameId];
-      activeModuleRef.current = module;
-
-      module.start(gameContainerRef.current, (result: GameFinishResult) => {
-        // Record score into session
-        statsManager.setScore(activeGameId, result.score, result.summary, result.details);
-
-        // Teardown and return to Hub (or Report card if all 3 complete)
-        teardownActiveGame();
-        setActiveGameId(null);
-
-        if (statsManager.isReportCardUnlocked()) {
-          setCurrentView('report');
-        } else {
-          setCurrentView('hub');
-        }
-      });
+    if (currentView !== 'game' || !activeGameId || !gameContainerRef.current) {
+      return;
     }
 
-    return () => {
-      if (currentView !== 'game') {
-        teardownActiveGame();
+    const module = gameModules[activeGameId];
+    activeModuleRef.current = module;
+
+    module.start(gameContainerRef.current, (result: GameFinishResult) => {
+      statsManager.setScore(activeGameId, result.score, result.summary, result.details);
+      teardownActiveGame();
+      setActiveGameId(null);
+
+      if (statsManager.isReportCardUnlocked()) {
+        setCurrentView('report');
+      } else {
+        setCurrentView('hub');
       }
+    });
+
+    return () => {
+      teardownActiveGame();
     };
   }, [currentView, activeGameId, teardownActiveGame]);
 
   return (
-    <div className="relative min-h-screen bg-[var(--bg-app)] text-[var(--ink)] overflow-x-hidden font-sans">
+    <div className="relative min-h-screen bg-bg-app text-ink overflow-x-hidden font-sans">
       {/* 1.5% SVG Noise Overlay */}
       <div className="noise-overlay" />
 
       {/* 30s Idle Warning Toast */}
       {isWarning && (
-        <div className="fixed top-4 right-4 z-50 bg-[var(--accent-red)] text-white px-4 py-2 rounded-md font-mono text-xs font-bold flex items-center space-x-2 shadow-xl animate-bounce">
+        <div className="fixed top-4 right-4 z-50 bg-accent-red text-white px-4 py-2 rounded-md font-mono text-xs font-bold flex items-center gap-2 shadow-xl animate-bounce">
           <Clock className="w-4 h-4 animate-spin" />
-          <span>INACTIVITY TIMEOUT IN {secondsRemaining}S</span>
+          <span>SESSION RESET IN {secondsRemaining}S</span>
         </div>
       )}
 
       {/* Idle Notice Banner */}
       {idleNotice && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-[var(--bg-surface)] border border-[var(--line-strong)] text-[var(--ink)] px-4 py-2 rounded-md font-mono text-xs flex items-center space-x-2 shadow-lg">
-          <AlertCircle className="w-4 h-4 text-[var(--accent-gold)]" />
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-bg-surface border border-line-strong text-ink px-4 py-2 rounded-md font-mono text-xs flex items-center gap-2 shadow-lg">
+          <AlertCircle className="w-4 h-4 text-accent-gold" />
           <span>{idleNotice}</span>
         </div>
       )}
@@ -141,9 +137,9 @@ export const App: React.FC = () => {
       )}
 
       {currentView === 'game' && (
-        <main className="w-full min-h-screen flex flex-col justify-between py-2">
-          {/* Top Return-to-Hub Escape Button for Kiosk */}
-          <header className="w-full max-w-5xl mx-auto px-4 flex justify-between items-center py-2">
+        <main className="w-full min-h-screen flex flex-col">
+          {/* Compact Kiosk Escape Header (56px) */}
+          <header className="h-[56px] w-full flex-none border-b border-line bg-bg-app/95 px-4 md:px-8 flex justify-between items-center">
             <button
               type="button"
               onClick={() => {
@@ -151,18 +147,22 @@ export const App: React.FC = () => {
                 setActiveGameId(null);
                 setCurrentView('hub');
               }}
-              className="text-xs font-mono uppercase tracking-wider text-[var(--ink-muted)] hover:text-[var(--ink)] bg-[var(--bg-surface)] hover:bg-[var(--bg-alt)] px-3 py-1.5 rounded border border-[var(--line)] transition-colors flex items-center space-x-1.5 shadow-sm"
+              className="text-xs font-mono font-bold uppercase tracking-wider text-ink-muted hover:text-ink bg-bg-surface hover:bg-bg-alt px-3 py-1.5 rounded-md border border-line transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
               aria-label="Exit current game to hub"
             >
-              <span>◀ Hub Menu</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Hub Menu</span>
             </button>
-            <span className="text-[11px] font-mono text-[var(--ink-dim)]">
-              Nagarpur Ethics Arcade // {gameModules[activeGameId ?? 'g1'].title}
+            <span className="text-xs font-mono text-ink-dim uppercase tracking-wider truncate ml-4">
+              Nagarpur Ethics Arcade <span className="mx-1.5 opacity-50">//</span>{' '}
+              <strong className="text-ink font-semibold">
+                {gameModules[activeGameId ?? 'g1'].title}
+              </strong>
             </span>
           </header>
 
-          {/* Container where the game mounts via start() */}
-          <div ref={gameContainerRef} className="w-full flex-1" />
+          {/* Container where the active game mounts via start() */}
+          <div ref={gameContainerRef} className="w-full flex-1 flex flex-col" />
         </main>
       )}
 

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { voterRows, VoterRecord } from './rows';
 import { audio } from '../../lib/audio';
-import { defaultRng } from '../../lib/rng';
+import { Mulberry32 } from '../../lib/rng';
 import { GameFinishResult } from '../../lib/moduleContract';
 
 interface Game7Props {
@@ -10,12 +10,16 @@ interface Game7Props {
 }
 
 export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
-  const [records, setRecords] = useState<VoterRecord[]>([]);
+  const rngRef = useRef<Mulberry32>(new Mulberry32(Date.now()));
+  const [records, setRecords] = useState<VoterRecord[]>(() =>
+    rngRef.current.shuffle([...voterRows])
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Timer: 75 seconds
   const [timeLeft, setTimeLeft] = useState(75);
   const [isGameOver, setIsGameOver] = useState(false);
+  const endedRef = useRef(false);
 
   // Metrics
   const [correctCount, setCorrectCount] = useState(0);
@@ -27,38 +31,30 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
   // Last feedback toast
   const [lastFeedback, setLastFeedback] = useState<{
     status: 'correct' | 'disenfranchised' | 'ghost_missed';
+    voterName: string;
     message: string;
   } | null>(null);
 
   useEffect(() => {
-    const shuffled = defaultRng.shuffle([...voterRows]);
-    setRecords(shuffled);
-  }, []);
-
-  useEffect(() => {
     if (isGameOver) return;
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          handleTimeUp();
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(interval);
   }, [isGameOver]);
 
-  const handleTimeUp = () => {
-    setIsGameOver(true);
-    audio.playFanfare();
-  };
+  useEffect(() => {
+    if (!isGameOver && timeLeft <= 0 && !endedRef.current) {
+      endedRef.current = true;
+      setIsGameOver(true);
+      audio.playFanfare();
+    }
+  }, [timeLeft, isGameOver]);
 
   const handleDecision = useCallback(
     (action: 'keep' | 'purge' | 'verify') => {
-      if (isGameOver || records.length === 0) return;
+      if (endedRef.current || isGameOver || records.length === 0) return;
 
       const current = records[currentIndex];
       if (!current) return;
@@ -73,17 +69,20 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
           setGhostsPurged((prev) => prev + 1);
           setLastFeedback({
             status: 'correct',
+            voterName: current.name,
             message: `Accurate Purge: ${current.explanation}`,
           });
         } else if (action === 'keep') {
           setCitizensProtected((prev) => prev + 1);
           setLastFeedback({
             status: 'correct',
+            voterName: current.name,
             message: `Protected Citizen: ${current.explanation}`,
           });
         } else {
           setLastFeedback({
             status: 'correct',
+            voterName: current.name,
             message: `Field Inquiry Ordered: ${current.explanation}`,
           });
         }
@@ -93,23 +92,29 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
           setDisenfranchisedCount((prev) => prev + 1);
           setLastFeedback({
             status: 'disenfranchised',
+            voterName: current.name,
             message: `VOTER DISENFRANCHISED: ${current.name} was a real citizen wrongfully stripped of voting rights!`,
           });
         } else if (action === 'keep' && !current.isRealCitizen) {
           setLastFeedback({
             status: 'ghost_missed',
+            voterName: current.name,
             message: `POLL INTEGRITY COMPROMISED: Allowed a fraudulent ghost voter on the electoral roll.`,
           });
         } else {
           setLastFeedback({
             status: 'ghost_missed',
+            voterName: current.name,
             message: `Incorrect Verification Action: ${current.explanation}`,
           });
         }
       }
 
       if (currentIndex + 1 >= records.length) {
-        const reshuffled = defaultRng.shuffle([...voterRows]);
+        const reshuffled = rngRef.current.shuffle([...voterRows]);
+        if (reshuffled.length > 1 && reshuffled[0].id === current.id) {
+          [reshuffled[0], reshuffled[1]] = [reshuffled[1], reshuffled[0]];
+        }
         setRecords(reshuffled);
         setCurrentIndex(0);
       } else {
@@ -206,7 +211,7 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
         <AnimatePresence mode="wait">
           {!isGameOver && current ? (
             <motion.div
-              key={current.id}
+              key={`${current.id}-${totalAudited}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96 }}
@@ -236,7 +241,7 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
                   <div className="text-lg font-bold text-[var(--ink)] font-display mt-0.5">{current.name}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-[var(--ink-dim)] uppercase tracking-wider">Age & Relation</div>
+                  <div className="text-[10px] text-[var(--ink-dim)] uppercase tracking-wider">Age &amp; Relation</div>
                   <div className="text-sm font-semibold text-[var(--ink)] mt-0.5">
                     Age: {current.age} ({current.relation})
                   </div>
@@ -286,7 +291,7 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
                 >
                   <div className="flex items-center space-x-2">
                     <span className="kbd border-white/60 text-white">2</span>
-                    <span className="text-sm">PURGE & DELETE</span>
+                    <span className="text-sm">PURGE &amp; DELETE</span>
                   </div>
                   <span className="text-[11px] text-red-100 font-normal mt-1">Ghost or deceased</span>
                 </button>
@@ -317,7 +322,10 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
                       : 'bg-amber-50 border-amber-200 text-amber-900'
                   }`}
                 >
-                  <span className="font-sans leading-normal block">
+                  <span className="font-bold uppercase tracking-wider block mb-0.5">
+                    Previous Record · {lastFeedback.voterName}
+                  </span>
+                  <span className="font-sans leading-normal block font-normal">
                     {lastFeedback.message}
                   </span>
                 </div>
@@ -326,6 +334,7 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
           ) : isGameOver ? (
             /* Reveal Screen matching G1's rhythm */
             <motion.div
+              key="reveal"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
@@ -368,9 +377,9 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
                     },
                   });
                 }}
-                className="mx-auto block w-full max-w-[320px] py-2.5 px-4 rounded border-2 border-[var(--accent-teal)] text-[var(--accent-teal)] hover:bg-[var(--accent-teal)] hover:text-white active:scale-98 font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
+                className="mx-auto block w-full max-w-[320px] py-2.5 px-4 rounded border-2 border-[var(--accent-teal)] text-[var(--accent-teal)] hover:bg-[var(--accent-teal)] hover:text-white active:scale-[0.98] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
               >
-                Ratify Electoral Roll & Return to Hub
+                Ratify Electoral Roll &amp; Return to Hub
               </button>
             </motion.div>
           ) : null}
@@ -378,7 +387,7 @@ export const Game7: React.FC<Game7Props> = ({ onFinish }) => {
       </div>
 
       <div className="text-center text-xs font-mono text-[var(--ink-dim)] pt-2 border-t border-[var(--line)]">
-        Controls: Press <span className="kbd">1</span> Keep on Roll, <span className="kbd">2</span> Purge & Delete, <span className="kbd">3</span> Field Verify, or click buttons.
+        Controls: Press <span className="kbd">1</span> Keep on Roll, <span className="kbd">2</span> Purge &amp; Delete, <span className="kbd">3</span> Field Verify, or click buttons.
       </div>
     </div>
   );

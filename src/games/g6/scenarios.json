@@ -74,7 +74,7 @@
     "entity": "City Central Supermart",
     "description": "Deleting electronic cash register point-of-sale audit logs at midnight using automated zapper software to underreport monthly turnover by 35%.",
     "classification": "evasion",
-    "explanation": "ILLEGAL EVASION. Using automated automated sales suppression software (zappers) to falsify electronic audit trails is high-tech fraud."
+    "explanation": "ILLEGAL EVASION. Using automated sales suppression software (zappers) to falsify electronic audit trails is high-tech fraud."
   },
   {
     "id": "sc12",
@@ -93,7 +93,7 @@
   {
     "id": "sc14",
     "entity": "FinCorp Advisory Ltd",
-    "description": "Paying executive bonuses as 'reimbursement of entertainment allowances' supported by blank restaurant receipts purchased from stationary shops.",
+    "description": "Paying executive bonuses as 'reimbursement of entertainment allowances' supported by blank restaurant receipts purchased from stationery shops.",
     "classification": "evasion",
     "explanation": "ILLEGAL EVASION. Forging fictitious expense documentation to mask taxable executive compensation."
   },

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import rawScenarios from './scenarios.json';
 import { audio } from '../../lib/audio';
-import { defaultRng } from '../../lib/rng';
+import { Mulberry32 } from '../../lib/rng';
 import { GameFinishResult } from '../../lib/moduleContract';
 
 export interface Scenario {
@@ -18,12 +18,16 @@ interface Game6Props {
 }
 
 export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
-  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const rngRef = useRef<Mulberry32>(new Mulberry32(Date.now()));
+  const [scenarios, setScenarios] = useState<Scenario[]>(() =>
+    rngRef.current.shuffle([...(rawScenarios as Scenario[])])
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Game timer: 60 seconds
   const [timeLeft, setTimeLeft] = useState(60);
   const [isGameOver, setIsGameOver] = useState(false);
+  const endedRef = useRef(false);
 
   // Scoring & Streak
   const [score, setScore] = useState(0);
@@ -40,34 +44,25 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
   } | null>(null);
 
   useEffect(() => {
-    const shuffled = defaultRng.shuffle([...(rawScenarios as Scenario[])]);
-    setScenarios(shuffled);
-  }, []);
-
-  useEffect(() => {
     if (isGameOver) return;
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          handleTimeUp();
-          return 0;
-        }
-        return prev - 1;
-      });
+      setTimeLeft((prev) => Math.max(0, prev - 1));
     }, 1000);
 
     return () => clearInterval(interval);
   }, [isGameOver]);
 
-  const handleTimeUp = () => {
-    setIsGameOver(true);
-    audio.playFanfare();
-  };
+  useEffect(() => {
+    if (!isGameOver && timeLeft <= 0 && !endedRef.current) {
+      endedRef.current = true;
+      setIsGameOver(true);
+      audio.playFanfare();
+    }
+  }, [timeLeft, isGameOver]);
 
   const handleAnswer = useCallback(
     (choice: 'evasion' | 'avoidance') => {
-      if (isGameOver || scenarios.length === 0) return;
+      if (endedRef.current || isGameOver || scenarios.length === 0) return;
 
       const current = scenarios[currentIndex];
       if (!current) return;
@@ -99,7 +94,10 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
       });
 
       if (currentIndex + 1 >= scenarios.length) {
-        const reshuffled = defaultRng.shuffle([...scenarios]);
+        const reshuffled = rngRef.current.shuffle([...scenarios]);
+        if (reshuffled.length > 1 && reshuffled[0].id === current.id) {
+          [reshuffled[0], reshuffled[1]] = [reshuffled[1], reshuffled[0]];
+        }
         setScenarios(reshuffled);
         setCurrentIndex(0);
       } else {
@@ -126,7 +124,7 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
 
   const current = scenarios[currentIndex];
   const accuracy = totalAttempted > 0 ? Math.round((correctCount / totalAttempted) * 100) : 0;
-  const normalizedScore = Math.min(100, Math.round((accuracy * 0.7) + (correctCount * 2.5)));
+  const normalizedScore = Math.min(100, Math.round(accuracy * 0.7 + correctCount * 2.5));
 
   const getRank = (acc: number) => {
     if (acc >= 85 && totalAttempted >= 6) return { title: 'Chief Forensic Tax Auditor' };
@@ -183,7 +181,7 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
         <AnimatePresence mode="wait">
           {!isGameOver && current ? (
             <motion.div
-              key={current.id}
+              key={`${current.id}-${totalAttempted}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96 }}
@@ -230,7 +228,7 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
                     }`}
                   >
                     <span className="font-bold uppercase tracking-wider block mb-0.5">
-                      {lastResult.correct ? '✓ Correct Classification' : '✗ Audit Discrepancy'}
+                      {lastResult.correct ? '✓ Correct' : '✗ Audit Discrepancy'} · Previous ({lastResult.scenario.entity})
                     </span>
                     <span className="font-sans text-xs block leading-normal">
                       {lastResult.scenario.explanation}
@@ -273,6 +271,7 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
           ) : isGameOver ? (
             /* Reveal Screen matching G1's rhythm */
             <motion.div
+              key="reveal"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
@@ -315,9 +314,9 @@ export const Game6: React.FC<Game6Props> = ({ onFinish }) => {
                     },
                   });
                 }}
-                className="mx-auto block w-full max-w-[320px] py-2.5 px-4 rounded border-2 border-[var(--accent-blue)] text-[var(--accent-blue)] hover:bg-[var(--accent-blue)] hover:text-white active:scale-98 font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
+                className="mx-auto block w-full max-w-[320px] py-2.5 px-4 rounded border-2 border-[var(--accent-blue)] text-[var(--accent-blue)] hover:bg-[var(--accent-blue)] hover:text-white active:scale-[0.98] font-mono text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
               >
-                Submit Audit & Return to Hub
+                Submit Audit &amp; Return to Hub
               </button>
             </motion.div>
           ) : null}

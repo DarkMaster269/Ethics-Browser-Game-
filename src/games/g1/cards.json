@@ -6,7 +6,7 @@
     "scenario": "A prominent real estate developer brings 50 boxes of sweets stuffed with ₹2 crore in unaccounted cash to distribute to ward booth managers.",
     "leftChoice": {
       "label": "Reject Cash",
-      "wealth": -2,
+      "wealth": -5,
       "influence": -8,
       "welfare": 4,
       "heat": -5,
@@ -28,7 +28,7 @@
     "scenario": "A construction syndicate promises a 12% cut from the Nagarpur East Flyover contract into your election fund if you pre-clear their sub-standard cement mix.",
     "leftChoice": {
       "label": "Enforce Quality Audit",
-      "wealth": -1,
+      "wealth": -4,
       "influence": 0,
       "welfare": 8,
       "heat": -3,
@@ -50,7 +50,7 @@
     "scenario": "A cash courier transporting ₹80 lakh without documentation has been stopped at the Nagarpur outer toll gate. The police inspector asks for a quiet call.",
     "leftChoice": {
       "label": "Let Law Take Course",
-      "wealth": -4,
+      "wealth": -6,
       "influence": -5,
       "welfare": 5,
       "heat": -6,
@@ -72,7 +72,7 @@
     "scenario": "Your chartered accountant proposes channeling ₹5 crore through 14 defunct shell companies registered at a single tin shed in Nagarpur Industrial Area.",
     "leftChoice": {
       "label": "File Legitimate Books",
-      "wealth": -3,
+      "wealth": -6,
       "influence": -3,
       "welfare": 5,
       "heat": -5,
@@ -94,7 +94,7 @@
     "scenario": "Ahead of Sunday's rally in Ward 11, local operatives demand ₹15 lakh for free liquor crates. Alternatively, residents are begging for emergency water tankers.",
     "leftChoice": {
       "label": "Send Water Tankers",
-      "wealth": -2,
+      "wealth": -5,
       "influence": 3,
       "welfare": 9,
       "heat": -3,
@@ -102,7 +102,7 @@
     },
     "rightChoice": {
       "label": "Distribute Liquor",
-      "wealth": -2,
+      "wealth": -4,
       "influence": 10,
       "welfare": -12,
       "heat": 13,
@@ -116,7 +116,7 @@
     "scenario": "The illegal Nagarpur river sand cartel offers to bankroll your entire social media army if you promise to look away from nighttime river dredging.",
     "leftChoice": {
       "label": "Impound Dredgers",
-      "wealth": -2,
+      "wealth": -4,
       "influence": -8,
       "welfare": 9,
       "heat": -5,
@@ -138,7 +138,7 @@
     "scenario": "A state healthcare grant of ₹3 crore for Nagarpur General Hospital's new dialysis unit can be administratively 're-allocated' into election public-relation stunts.",
     "leftChoice": {
       "label": "Build the Dialysis Wing",
-      "wealth": 0,
+      "wealth": -3,
       "influence": 5,
       "welfare": 10,
       "heat": -5,
@@ -160,7 +160,7 @@
     "scenario": "An advisor suggests declaring ₹4 crore in untaxed political slush funds as 'bumper mango harvest profit' from a 2-acre fallow plot to exploit farm tax exemptions.",
     "leftChoice": {
       "label": "Decline Sham Exemption",
-      "wealth": -3,
+      "wealth": -5,
       "influence": 0,
       "welfare": 4,
       "heat": -3,
@@ -182,7 +182,7 @@
     "scenario": "During a tight local council tally, an election official hints that for a 'discretionary contribution', they can delay ballot verification until your voters arrive.",
     "leftChoice": {
       "label": "Respect Voter Mandate",
-      "wealth": 0,
+      "wealth": -2,
       "influence": -8,
       "welfare": 6,
       "heat": -5,
@@ -190,7 +190,7 @@
     },
     "rightChoice": {
       "label": "Pay the Discretionary Fee",
-      "wealth": -3,
+      "wealth": -5,
       "influence": 14,
       "welfare": -12,
       "heat": 20,
@@ -204,7 +204,7 @@
     "scenario": "To park ₹8 crore of accumulated commission fees, a real estate agent suggests purchasing a 5-story shopping plaza under the name of your family driver.",
     "leftChoice": {
       "label": "Refuse Benami Shelter",
-      "wealth": -2,
+      "wealth": -4,
       "influence": 0,
       "welfare": 4,
       "heat": -6,
@@ -226,7 +226,7 @@
     "scenario": "Operatives propose paying ₹25 lakh cash to 4 dummy independent candidates with names identical to the main challenger to confuse voters at the ballot booth.",
     "leftChoice": {
       "label": "Fight on Track Record",
-      "wealth": 0,
+      "wealth": -2,
       "influence": -3,
       "welfare": 5,
       "heat": -3,
@@ -234,7 +234,7 @@
     },
     "rightChoice": {
       "label": "Fund the Namesakes",
-      "wealth": -5,
+      "wealth": -7,
       "influence": 10,
       "welfare": -9,
       "heat": 10,
@@ -248,7 +248,7 @@
     "scenario": "A public activist has uncovered shell company records linking local tenders to your campaign office. A corrupt tax commissioner offers to raid his NGO.",
     "leftChoice": {
       "label": "Release Public Audit",
-      "wealth": -4,
+      "wealth": -6,
       "influence": -5,
       "welfare": 9,
       "heat": -8,
